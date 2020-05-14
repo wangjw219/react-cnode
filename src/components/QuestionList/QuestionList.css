@@ -1,0 +1,39 @@
+.question-list {
+    overflow-y: scroll;
+    box-sizing: border-box;
+    height: 100%;
+    padding: 40px 0;
+}
+
+.question-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    line-height: 30px;
+    padding: 0 10px;
+}
+
+.avatar {
+    flex: 0 0 15px;
+    height: 15px;
+    border-radius: 3px;
+    background-color: #ccc;
+}
+
+.title {
+    flex: 1 1 auto;
+    margin-left: 15px;
+    text-align: left;
+    font-size: 16px;
+    color: #333;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.time {
+    flex: 0 0 55px;
+    text-align: right;
+    font-size: 12px;
+    color: #666;
+}
