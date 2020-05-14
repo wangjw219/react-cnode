@@ -9,7 +9,7 @@ export default function QuestionList(props) {
                 list.map(item => {
                     return (
                         <div className="question-item" key={item.id}>
-                            <img src={item.avatar} className="avatar" />
+                            <img src={item.avatar} className="avatar" alt="avatar" />
                             <p className="title">{item.title}</p>
                             <p className="time">{item.time}</p>
                         </div>

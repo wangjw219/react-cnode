@@ -1,5 +1,6 @@
 import React from 'react';
 import './Home.css';
+import axios from '../../common/ajax';
 import HomeTab from '../../components/HomeTab/HomeTab';
 import QuestionList from '../../components/QuestionList/QuestionList';
 import Pagination from '../../components/Pagination/Pagination';
@@ -52,17 +53,29 @@ export default class Home extends React.Component {
     }
 
     async getTopicList({page, tab}) {
+        const CancelToken = axios.CancelToken;
+        const source = CancelToken.source();
+        const timer = setTimeout(() => {
+            source.cancel('取消请求');
+            this.getTopicList({page, tab});
+        }, 3000);
         this.setState({isLoading: true});
-        let list = await getTopics({
-            page,
-            tab
-        });
-        list = list.map(item => {
-            item.avatar = item.author.avatar_url;
-            item.time = this.setTopicTime(item.last_reply_at);
-            return item;
-        });
-        this.setState({questionList: list, isLoading: false});
+        try {
+            let list = await getTopics({
+                page,
+                tab,
+                cancelToken: source.token
+            });
+            list = list.map(item => {
+                item.avatar = item.author.avatar_url;
+                item.time = this.setTopicTime(item.last_reply_at);
+                return item;
+            });
+            clearTimeout(timer);
+            this.setState({questionList: list, isLoading: false});
+        } catch (error) {
+            clearTimeout(timer);
+        }
     }
 
     /**

@@ -33,8 +33,9 @@ export function sendRequest({url, params, data, method}) {
  * @param {String} tab 主题分类。目前有 'ask'、'share'、'job'、'good'
  * @param {Number} limit 每一页的主题数量
  * @param {String} mdrender 是否渲染 markdown 格式文本，可选 'true'/'false'
+ * @param {String} cancelToken axios 取消请求对象
  */
-export function getTopics({page = 1, tab, limit = 20, mdrender}) {
+export function getTopics({page = 1, tab, limit = 20, mdrender, cancelToken}) {
     return sendRequest({
         url: config.API.getTopics,
         params: {
