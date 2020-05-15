@@ -1,10 +1,26 @@
 import React from 'react';
-import './Home.css';
-import axios from '../../common/ajax';
-import HomeTab from '../../components/HomeTab/HomeTab';
-import QuestionList from '../../components/QuestionList/QuestionList';
-import Pagination from '../../components/Pagination/Pagination';
-import {getTopics} from '../../common/service';
+import axios from 'common/ajax';
+import HomeTab from 'components/HomeTab';
+import QuestionList from 'components/QuestionList';
+import Pagination from 'components/Pagination';
+import {getTopics} from 'common/service';
+import styled from 'styled-components';
+
+const HomePage = styled.div`
+    position: relative;
+    height: 100%;
+`;
+
+const HomeLoading = styled.div`
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    line-height: 40px;
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+`;
 
 export default class Home extends React.Component {
     constructor(props) {
@@ -57,8 +73,10 @@ export default class Home extends React.Component {
         const source = CancelToken.source();
         const timer = setTimeout(() => {
             source.cancel('取消请求');
-            this.getTopicList({page, tab});
-        }, 3000);
+            if (this.state.questionList.length === 0) {
+                this.getTopicList({page, tab});
+            }
+        }, 5000);
         this.setState({isLoading: true});
         try {
             let list = await getTopics({
@@ -136,21 +154,21 @@ export default class Home extends React.Component {
             isLoading
         } = this.state;
         return (
-            <div className="home">
+            <HomePage>
                 <HomeTab
                     tabList={tabList}
                     activeTabId={activeTabId}
                     setActiveTabId={this.setActiveTabId}
                 />
                 {
-                    isLoading ? <div className="loading">加载中...</div> : <QuestionList list={questionList}/>
+                    isLoading ? <HomeLoading>加载中...</HomeLoading> : <QuestionList list={questionList}/>
                 }
                 <Pagination
                     currentPage={currentPage}
                     maxPage={maxPage}
                     setCurrentPage={this.setCurrentPage}
                 />
-            </div>
+            </HomePage>
         );
     }
 }

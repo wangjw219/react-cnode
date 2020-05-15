@@ -17,3 +17,12 @@
 1）React 数据驱动 UI、React 组件化
 2）样式：css 独立文件
 3）网络请求：axios
+
+### v2（对应项目的 v2 分支）
+
+添加详情页等多个页面
+
+功能点：
+
+1）ReactRouter 前端路由
+2) css 方案采用 styledComponents

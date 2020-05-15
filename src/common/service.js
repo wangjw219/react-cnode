@@ -46,3 +46,13 @@ export function getTopics({page = 1, tab, limit = 20, mdrender, cancelToken}) {
         }
     });
 }
+
+/**
+ * 获取主题详情
+ * @param {String} id 主题 id
+ */
+export function getOneTopic(id) {
+    return sendRequest({
+        url: `${config.API.getOneTopic}/${id}`
+    });
+}
