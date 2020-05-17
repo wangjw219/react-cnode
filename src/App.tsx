@@ -4,18 +4,17 @@ import Detail from 'pages/Detail';
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
 } from 'react-router-dom';
 
 function App() {
   return (
     <React.StrictMode>
       <Router>
-          <Switch>
-            <Route path="/detail/:id" component={Detail}></Route>
-            <Route path="/" component={Home}>
-            </Route>
-          </Switch>
+        <Switch>
+          <Route path="/detail/:id" component={Detail} />
+          <Route path="/" component={Home} />
+        </Switch>
       </Router>
     </React.StrictMode>
   );

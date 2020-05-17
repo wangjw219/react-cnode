@@ -26,3 +26,12 @@
 
 1）ReactRouter 前端路由
 2) css 方案采用 styledComponents
+
+### v3（对应项目的 v3 分支）
+
+优化代码
+
+功能点：
+
+1）添加 typescript
+2）添加 eslint

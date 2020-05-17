@@ -39,11 +39,31 @@ const DetailContent = styled.div`
     }
 `;
 
-export default class Detail extends React.Component {
-    constructor(props) {
+
+interface DetailProps {
+    match: {
+        params: {
+            id: string
+        }
+    }
+};
+
+interface DetailState {
+    topicInfo: {
+        title: string;
+        content: string;
+    };
+    isLoading: boolean;
+}
+
+export default class Detail extends React.Component<DetailProps, DetailState> {
+    constructor(props: DetailProps) {
         super(props);
         this.state = {
-            topicInfo: {},
+            topicInfo: {
+                title: '',
+                content: ''
+            },
             isLoading: false
         };
     }
@@ -53,7 +73,7 @@ export default class Detail extends React.Component {
         this.getTopic(id);
     }
 
-    async getTopic(id) {
+    async getTopic(id: string) {
         this.setState({isLoading: true});
         const data = await getOneTopic(id);
         this.setState({topicInfo: data, isLoading: false});

@@ -32,7 +32,13 @@ const PageItemActive = styled(PageItem)`
     color: #80bd01;
 `;
 
-export default function Pagination(props) {
+interface PaginationProps {
+    maxPage: number;
+    currentPage: number;
+    setCurrentPage: (page: number) => void;
+}
+
+export default function Pagination(props: PaginationProps) {
     const {maxPage, currentPage, setCurrentPage} = props;
     const pageList = Array.from({length: maxPage}).map((_, index) => index + 1);
     const pageStartIndex = Math.min(Math.max(currentPage - 1 - 2, 0), maxPage - 5);

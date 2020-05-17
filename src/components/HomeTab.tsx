@@ -28,7 +28,13 @@ const TabItemActive = styled(TabItem)`
     border-radius: 5px;
 `;
 
-export default function HomeTab(props) {
+type HomeTabProps = {
+    tabList: Array<any>;
+    activeTabId: number;
+    setActiveTabId(id: number): void;
+}
+
+export default function HomeTab(props: HomeTabProps) {
     const {tabList, activeTabId, setActiveTabId} = props;
     return (
         <TabList>

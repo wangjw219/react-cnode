@@ -22,8 +22,27 @@ const HomeLoading = styled.div`
     color: #666;
 `;
 
-export default class Home extends React.Component {
-    constructor(props) {
+let cachedQuestionList: Array<any> = [];
+
+interface HomeProps {};
+
+interface HomeState {
+    tabList: Array<HomeTabItem>;
+    activeTabId: number;
+    maxPage: number;
+    currentPage: number;
+    questionList: Array<Object>;
+    isLoading: boolean;
+};
+
+interface HomeTabItem {
+    id: number;
+    name: string;
+    key?: string;
+}
+
+export default class Home extends React.Component<HomeProps, HomeState> {
+    constructor(props: HomeProps) {
         super(props);
         this.state = {
             // 顶部菜单
@@ -60,19 +79,22 @@ export default class Home extends React.Component {
             // 问题列表
             questionList: [],
             // 加载
-            isLoading: true
+            isLoading: false
         };
     }
 
     componentDidMount() {
-        this.getTopicList({page: 1});
+        if (cachedQuestionList.length > 0) {
+            this.setState({questionList: cachedQuestionList});
+        } else {
+            this.getTopicList({page: 1});
+        }
     }
 
-    async getTopicList({page, tab}) {
+    async getTopicList({page, tab}: {page: number; tab?: string}) {
         const CancelToken = axios.CancelToken;
         const source = CancelToken.source();
         const timer = setTimeout(() => {
-            source.cancel('取消请求');
             if (this.state.questionList.length === 0) {
                 this.getTopicList({page, tab});
             }
@@ -82,6 +104,7 @@ export default class Home extends React.Component {
             let list = await getTopics({
                 page,
                 tab,
+                limit: 20,
                 cancelToken: source.token
             });
             list = list.map(item => {
@@ -89,6 +112,8 @@ export default class Home extends React.Component {
                 item.time = this.setTopicTime(item.last_reply_at);
                 return item;
             });
+            // 缓存数据
+            cachedQuestionList = list;
             clearTimeout(timer);
             this.setState({questionList: list, isLoading: false});
         } catch (error) {
@@ -100,7 +125,7 @@ export default class Home extends React.Component {
      * 将时间字符串转换成相对当前的时间
      * @param {String} timeString ISO 时间，例如：'2020-05-13T05:55:32.554Z'
      */
-    setTopicTime(timeString) {
+    setTopicTime(timeString: string) {
         const timeStamp = new Date(timeString).getTime();
         const timeStampDistance = Math.floor((Date.now() - timeStamp) / 1000);
         const tenMinuteSecond = 600;
@@ -120,26 +145,26 @@ export default class Home extends React.Component {
         }
     }
 
-    setActiveTabId = (id) => {
+    setActiveTabId = (id: number) => {
         const {tabList, activeTabId} = this.state;
         if (id !== activeTabId) {
             this.setState({activeTabId: id, currentPage: 1});
             const activeTab = tabList.find(item => item.id === id);
             this.getTopicList({
                 page: 1,
-                tab: activeTab.key
+                tab: activeTab?.key
             });
         }
     }
 
-    setCurrentPage = (page) => {
+    setCurrentPage = (page: number) => {
         const {tabList, activeTabId, currentPage} = this.state;
         if (page !== currentPage) {
             this.setState({currentPage: page});
             const activeTab = tabList.find(item => item.id === activeTabId);
             this.getTopicList({
                 page,
-                tab: activeTab.key
+                tab: activeTab?.key
             });
         }
     }
