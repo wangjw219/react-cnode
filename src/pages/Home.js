@@ -22,6 +22,8 @@ const HomeLoading = styled.div`
     color: #666;
 `;
 
+let cachedQuestionList = [];
+
 export default class Home extends React.Component {
     constructor(props) {
         super(props);
@@ -60,12 +62,16 @@ export default class Home extends React.Component {
             // 问题列表
             questionList: [],
             // 加载
-            isLoading: true
+            isLoading: false
         };
     }
 
     componentDidMount() {
-        this.getTopicList({page: 1});
+        if (cachedQuestionList.length > 0) {
+            this.setState({questionList: cachedQuestionList});
+        } else {
+            this.getTopicList({page: 1});
+        }
     }
 
     async getTopicList({page, tab}) {
@@ -89,6 +95,8 @@ export default class Home extends React.Component {
                 item.time = this.setTopicTime(item.last_reply_at);
                 return item;
             });
+            // 缓存数据
+            cachedQuestionList = list;
             clearTimeout(timer);
             this.setState({questionList: list, isLoading: false});
         } catch (error) {
