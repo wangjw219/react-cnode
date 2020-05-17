@@ -8,14 +8,9 @@ import config from './config';
  * @param {Object} data 请求实体数据，用于 POST 方法
  * @param {String} method 请求方法
  */
-export function sendRequest({url, params, data, method}) {
+export function sendRequest(requestObject: {url: string, params?: {[key: string]: any}, data?: {[key: string]: any}, method?: 'GET' | 'POST'}): Promise<any> {
     return new Promise((resolve, reject) => {
-        ajax({
-            url,
-            params,
-            data,
-            method
-        }).then(res => {
+        ajax(requestObject).then(res => {
             if (res.data.success) {
                 resolve(res.data.data);
             } else {
@@ -33,17 +28,12 @@ export function sendRequest({url, params, data, method}) {
  * @param {String} tab 主题分类。目前有 'ask'、'share'、'job'、'good'
  * @param {Number} limit 每一页的主题数量
  * @param {String} mdrender 是否渲染 markdown 格式文本，可选 'true'/'false'
- * @param {String} cancelToken axios 取消请求对象
+ * @param {Object} cancelToken axios 取消请求 token
  */
-export function getTopics({page = 1, tab, limit = 20, mdrender, cancelToken}) {
+export function getTopics(requestObject: {tab?: string,  mdrender?: boolean, cancelToken: any, limit: number, page: number}): Promise<Array<any>> {
     return sendRequest({
         url: config.API.getTopics,
-        params: {
-            page,
-            tab,
-            limit,
-            mdrender
-        }
+        params: requestObject
     });
 }
 
@@ -51,7 +41,7 @@ export function getTopics({page = 1, tab, limit = 20, mdrender, cancelToken}) {
  * 获取主题详情
  * @param {String} id 主题 id
  */
-export function getOneTopic(id) {
+export function getOneTopic(id: string): Promise<{title: string; content: string}> {
     return sendRequest({
         url: `${config.API.getOneTopic}/${id}`
     });

@@ -44,7 +44,9 @@ const QuestionItemTime = styled.p`
     color: #666;
 `;
 
-export default function QuestionList(props) {
+type QuestionListProps = {list: Array<any>};
+
+export default function QuestionList(props: QuestionListProps) {
     const {list} = props;
     return (
         <QuestionListWrapper>
