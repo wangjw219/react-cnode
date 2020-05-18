@@ -1,6 +1,6 @@
 import React from 'react';
 import Home from 'pages/Home';
-import Detail from 'pages/Detail';
+import DetailHook from 'pages/DetailHook';
 import {
   BrowserRouter as Router,
   Switch,
@@ -12,7 +12,7 @@ function App() {
     <React.StrictMode>
       <Router>
         <Switch>
-          <Route path="/detail/:id" component={Detail} />
+          <Route path="/detail/:id" component={DetailHook} />
           <Route path="/" component={Home} />
         </Switch>
       </Router>

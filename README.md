@@ -35,3 +35,4 @@
 
 1）添加 typescript
 2）添加 eslint
+3）使用 react hooks 重写主题详情页
