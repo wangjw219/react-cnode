@@ -39,7 +39,6 @@ const DetailContent = styled.div`
     }
 `;
 
-
 interface DetailProps {
     match: {
         params: {
